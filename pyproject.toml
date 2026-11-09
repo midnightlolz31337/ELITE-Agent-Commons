@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elite-agent-commons"
+version = "0.1.0"
+description = "Static capability discovery and task routing for ELITE tools"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+elite-commons = "elite_commons.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["elite_commons*"]
