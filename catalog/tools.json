@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0.0",
+  "catalogue_mode": "curated_static",
+  "warning": "A catalogue entry is a discovery hint, not a security review or permission to execute.",
+  "tools": [
+    {
+      "id": "elite:ingestion-core",
+      "name": "ELITE Ingestion Core",
+      "url": "https://github.com/midnightlolz31337/ELITE-Ingestion-Core",
+      "capabilities": [
+        "bounded-ingestion",
+        "data-quality-validation",
+        "quarantine",
+        "provenance"
+      ],
+      "inputs": [
+        "jsonl",
+        "csv"
+      ],
+      "outputs": [
+        "jsonl",
+        "quarantine-jsonl"
+      ],
+      "status": "prototype",
+      "evidence": "Repository initialized; capability claims are scoped to documented local implementation."
+    },
+    {
+      "id": "elite:protocol",
+      "name": "ELITE Protocol",
+      "url": "https://github.com/midnightlolz31337/ELITE-Protocol",
+      "capabilities": [
+        "evidence-envelope",
+        "provenance-model",
+        "trust-boundaries"
+      ],
+      "inputs": [
+        "json"
+      ],
+      "outputs": [
+        "json"
+      ],
+      "status": "specification",
+      "evidence": "Protocol schemas and documentation are being established."
+    },
+    {
+      "id": "elite:network-atlas",
+      "name": "Huffman Network Atlas",
+      "url": "https://github.com/midnightlolz31337/Huffman-Network-Atlas",
+      "capabilities": [
+        "ecosystem-discovery",
+        "repository-index",
+        "provenance-catalogue"
+      ],
+      "inputs": [
+        "json"
+      ],
+      "outputs": [
+        "json",
+        "markdown"
+      ],
+      "status": "scaffolded",
+      "evidence": "Static repository registry and validators."
+    }
+  ]
+}
