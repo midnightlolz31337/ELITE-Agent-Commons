@@ -22,3 +22,5 @@ jobs:
         run: python -m pip install --no-deps --target "$RUNNER_TEMP/elite-commons-installed" .
       - name: Verify installed package outside the source tree
         run: cd "$RUNNER_TEMP" && PYTHONPATH="$RUNNER_TEMP/elite-commons-installed" python -m elite_commons.cli validate
+      - name: Verify installed console entry point
+        run: cd "$RUNNER_TEMP" && PYTHONPATH="$RUNNER_TEMP/elite-commons-installed" "$RUNNER_TEMP/elite-commons-installed/bin/elite-commons" validate
