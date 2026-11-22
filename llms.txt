@@ -4,7 +4,7 @@ Purpose: curated, machine-readable discovery of ELITE tools and research utiliti
 
 Start here:
 - README.md — purpose, quick start, trust boundaries.
-- catalog/tools.json — static catalogue of tools, capabilities, formats, status, and evidence notes.
+- elite_commons/data/tools.json — static catalogue of tools, capabilities, formats, status, and evidence notes.
 - elite_commons/cli.py — deterministic list, search, route, and validation commands.
 - AGENTS.md — safe agent-use instructions.
 - SECURITY.md — reporting and security boundaries.
