@@ -2,11 +2,10 @@
 from __future__ import annotations
 import argparse
 import json
-from pathlib import Path
+from importlib.resources import files
 from urllib.parse import urlparse
 
-ROOT = Path(__file__).resolve().parents[1]
-CATALOGUE = ROOT / "catalog" / "tools.json"
+CATALOGUE = files("elite_commons").joinpath("data", "tools.json")
 
 def load_catalogue() -> dict:
     return json.loads(CATALOGUE.read_text(encoding="utf-8"))
