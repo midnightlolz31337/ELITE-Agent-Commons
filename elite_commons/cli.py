@@ -55,11 +55,15 @@ def validate(data: dict) -> list[str]:
 
         url = item.get("url")
         if isinstance(url, str):
-            parsed = urlparse(url)
-            segments = [part for part in parsed.path.split("/") if part]
-            if (parsed.scheme != "https" or parsed.netloc != "github.com"
-                    or len(segments) != 2 or parsed.username or parsed.password
-                    or parsed.query or parsed.fragment):
+            try:
+                parsed = urlparse(url)
+                segments = [part for part in parsed.path.split("/") if part]
+                valid_url = (parsed.scheme == "https" and parsed.netloc == "github.com"
+                             and len(segments) == 2 and not parsed.username and not parsed.password
+                             and not parsed.query and not parsed.fragment)
+            except ValueError:
+                valid_url = False
+            if not valid_url:
                 errors.append(f"tools[{i}] URL must be a canonical https://github.com/owner/repo URL")
     return errors
 
