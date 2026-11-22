@@ -14,3 +14,6 @@ elite-commons = "elite_commons.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["elite_commons*"]
+
+[tool.setuptools.package-data]
+elite_commons = ["data/*.json"]
