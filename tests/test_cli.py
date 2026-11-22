@@ -45,6 +45,10 @@ class CatalogueTests(unittest.TestCase):
         errors = validate({"schema_version": "1.0.0", "tools": [tool_record(status="trusted")]})
         self.assertTrue(any("unsupported status" in e for e in errors))
 
+    def test_malformed_url_rejected_without_crashing(self):
+        errors = validate({"schema_version": "1.0.0", "tools": [tool_record(url="https://[invalid")]})
+        self.assertTrue(any("canonical https://" in e for e in errors))
+
     def test_non_object_catalogue_rejected(self):
         self.assertEqual(validate([]), ["catalogue must be a JSON object"])
 
