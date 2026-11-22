@@ -12,19 +12,55 @@ def load_catalogue() -> dict:
 
 def validate(data: dict) -> list[str]:
     errors = []
+    if not isinstance(data, dict):
+        return ["catalogue must be a JSON object"]
     if data.get("schema_version") != "1.0.0":
         errors.append("unsupported schema_version")
+    tools = data.get("tools")
+    if not isinstance(tools, list):
+        return errors + ["tools must be a list"]
+
     ids = set()
-    for i, item in enumerate(data.get("tools", [])):
-        for field in ("id", "name", "url", "capabilities", "inputs", "outputs", "status", "evidence"):
+    allowed_statuses = {"prototype", "specification", "scaffolded", "implemented", "experimental", "planned", "deprecated"}
+    string_fields = ("id", "name", "url", "status", "evidence")
+    list_fields = ("capabilities", "inputs", "outputs")
+
+    for i, item in enumerate(tools):
+        if not isinstance(item, dict):
+            errors.append(f"tools[{i}] must be an object")
+            continue
+        for field in (*string_fields, *list_fields):
             if field not in item:
                 errors.append(f"tools[{i}] missing {field}")
-        if item.get("id") in ids:
-            errors.append(f"duplicate id: {item.get('id')}")
-        ids.add(item.get("id"))
-        parsed = urlparse(item.get("url", ""))
-        if parsed.scheme != "https" or parsed.netloc != "github.com":
-            errors.append(f"tools[{i}] URL must use https://github.com")
+
+        for field in string_fields:
+            value = item.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"tools[{i}] {field} must be a non-empty string")
+
+        for field in list_fields:
+            value = item.get(field)
+            if not isinstance(value, list) or any(not isinstance(v, str) or not v.strip() for v in value):
+                errors.append(f"tools[{i}] {field} must be a list of non-empty strings")
+
+        item_id = item.get("id")
+        if isinstance(item_id, str) and item_id:
+            if item_id in ids:
+                errors.append(f"duplicate id: {item_id}")
+            ids.add(item_id)
+
+        status = item.get("status")
+        if isinstance(status, str) and status not in allowed_statuses:
+            errors.append(f"tools[{i}] unsupported status: {status}")
+
+        url = item.get("url")
+        if isinstance(url, str):
+            parsed = urlparse(url)
+            segments = [part for part in parsed.path.split("/") if part]
+            if (parsed.scheme != "https" or parsed.netloc != "github.com"
+                    or len(segments) != 2 or parsed.username or parsed.password
+                    or parsed.query or parsed.fragment):
+                errors.append(f"tools[{i}] URL must be a canonical https://github.com/owner/repo URL")
     return errors
 
 def main() -> int:
